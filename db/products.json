@@ -1,0 +1,29 @@
+[
+    {
+        "id": 0,
+        "title": "Cafe Torrado",
+        "description": "Prohibido en diferentes paises",
+        "code": "123454545454656465",
+        "price": -1,
+        "status": true,
+        "stock": 7,
+        "category": "Comida",
+        "thumbnails": [
+            "StringValue1",
+            "StringValue2"
+        ]
+    },
+    {
+        "id": 34,
+        "title": "Barra de Metal",
+        "description": "Que no se caiga",
+        "code": "TAeNlpUIlRs",
+        "price": 500,
+        "status": true,
+        "stock": 1,
+        "category": "Manufactura",
+        "thumbnails": [
+            "https://www.youtube.com/watch?v=TAeNlpUIlRs"
+        ]
+    }
+]

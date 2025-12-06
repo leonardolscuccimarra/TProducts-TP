@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.3",
+    "socket": "^1.1.41",
+    "socket.io": "^4.8.1",
+    "sweetalert2": "^11.26.3"
+  },
+  "name": "tproducts-tp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
