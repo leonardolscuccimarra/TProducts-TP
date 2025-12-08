@@ -1,4 +1,4 @@
-const socket = io()
+const socket = io();
 
 /* if (!usuario) {
   Swal.fire({
@@ -17,18 +17,62 @@ const socket = io()
 }
  */
 
-// seleccionamos elementos
-const btn = document.getElementById('btnEnviar')
-const lista = document.getElementById('lista')
+/* const btnPost = document.getElementById('btnPost'); */
+/* const btnPut = document.getElementById('btnPut');
+const btnDelete = document.getElementById('btnDelete'); */
+const lista = document.getElementById('lista');
 
-btn.addEventListener('click', () => {
-    const texto = input.value
-    socket.emit('mensaje', { usuario, texto })
-    input.value = ''
-})
+/* btnPost.addEventListener('click', () => {
 
-socket.on('mensaje', data => {
-    const li = document.createElement('li')
-    li.textContent = `${data.usuario}: ${data.texto}`
-    lista.appendChild(li)
+  //Multiple Values de: https://sweetalert2.github.io/#input-types
+  const { value: formValues } = Swal.fire({
+    title: "Multiple inputs",
+    html: `
+    <input id="swal-input1" class="swal2-input">
+    <input id="swal-input2" class="swal2-input">
+    <input id="swal-input3" class="swal2-input">
+    <input id="swal-input4" class="swal2-input" inputLabel="Your IP address">
+  `,
+    focusConfirm: false,
+    preConfirm: () => {
+      return [
+        document.getElementById("swal-input1").value,
+        document.getElementById("swal-input2").value,
+        document.getElementById("swal-input3").value,
+        document.getElementById("swal-input2").value
+      ];
+    }
+  });
+  if (formValues) {
+    fetch('http://localhost:8080/api/products', {
+      method: "POST",
+
+    });
+  }
+}); */
+
+/*  btnPut.addEventListener('click', () => {
+  socket.emit('put', "hola");
+}); */
+
+btnDelete.addEventListener('click', () => {
+  const { value: pid } = Swal.fire({
+    title: "ID del Objeto a Eliminar",
+    input: "text",
+    inputValue,
+    showCancelButton: true,
+  });
+
+  fetch(`http://localhost:8080/api/products/${pid}`, {
+    method: `delete`,
+  });
+});
+
+socket.on('update', data => {
+  lista.empty();
+  data.forEach(o => {
+    const li = document.createElement('li');
+    li.textContent = `${o.title}: ${o.price} || ${o.category} || ID:${o.id} ${o.status ? `✅ Stock: ${o.stock}` : '❌'}`
+    lista.appendChild(li);
+  });
 })

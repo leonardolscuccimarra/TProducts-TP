@@ -6,6 +6,7 @@ import express, { raw } from 'express';
 import fs from 'fs/promises';
 export const routerProducts = express.Router();
 
+
 routerProducts.use(express.json());
 
 async function dbCheck(path) {
@@ -23,7 +24,7 @@ dbCheck('./db/products.json');
 /* GET /:
 Debe listar todos los productos de la base de datos.  */
 
-routerProducts.get('/api/products/', async (request, res) => {
+routerProducts.get('/api/products/', async (req, res) => {
   try {
     const rawData = await fs.readFile('./db/products.json', 'utf-8');
     let data = JSON.parse(rawData);
@@ -89,6 +90,8 @@ Debe agregar un nuevo producto con los siguientes campos: */
 routerProducts.post('/api/products/', async (request, res) => {
   let data = new Array
   let rawData
+  const io = request.app.get('io');
+
   try {
     rawData = await fs.readFile('./db/products.json', 'utf-8');
     data = (JSON.parse(rawData) || []);
@@ -131,6 +134,7 @@ routerProducts.post('/api/products/', async (request, res) => {
 
   try {
     await fs.writeFile('./db/products.json', rawData);
+    io.emit('refresh', data);
     res.status(201).json(data);
   } catch (err) {
     console.error(`Error al guardar el archivo JSON:\n${err}`);
@@ -143,6 +147,7 @@ Debe actualizar un producto por los campos enviados desde el body. No se debe ac
 
 routerProducts.put('/api/products/:pid', async (request, res) => {
   const pid = request.params.pid
+  const io = request.app.get('io');
   if (pid == null) {
     return res.status(204).send(`Parametro ID vacío`);
   }
@@ -201,6 +206,7 @@ routerProducts.put('/api/products/:pid', async (request, res) => {
   try {
     await fs.writeFile('./db/products.json', rawData);
     res.status(201).json(data);
+    io.emit('refresh', data);
   } catch (err) {
     console.error(`Error al guardar el archivo JSON:\n${err}`);
     res.status(500).send(`Error al guardar el archivo JSON.\n${err}`);
@@ -216,6 +222,7 @@ routerProducts.delete('/api/products/', async (request, res) => {
 });
 
 routerProducts.delete('/api/products/:pid', async (request, res) => {
+  const io = request.app.get('io');
   const pid = request.params.pid;
   /*  if (pid == null){
      return res.status(204).send(`Parametro ID vacío`);
@@ -239,6 +246,7 @@ routerProducts.delete('/api/products/:pid', async (request, res) => {
   try {
     await fs.writeFile('./db/products.json', rawData);
     res.status(204).json(dataAfterDelete);
+    io.emit('refresh', dataAfterDelete);
   } catch (err) {
     console.error(`Error al guardar el archivo JSON:\n${err}`);
     res.status(500).send(`Error al guardar el archivo JSON.\n${err}`);

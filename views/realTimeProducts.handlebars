@@ -1,4 +1,26 @@
 <h2>{{titulo}}</h2>
 <p>Conectado mediante {{protocolo}}</p>
-{{>ui}}
-{{>list}}
+<button id="btnPost">Nuevo Producto</button>
+<button id="btnPut">Modificar Producto</button>
+<button id="btnDelete">Borrar Producto</button>
+
+{{#if hayProductos}}
+<ul id="lista">
+    {{#each productos}}
+    <li>{{this.title}}: ${{this.price}} || {{this.category}} || ID:{{this.id}}
+        {{#if this.status}}
+        ✅ Stock: {{this.stock}}
+        {{else}}
+        ❌
+        {{/if}}
+    </li>
+
+    {{/each}}
+</ul>
+{{else}}
+<p>No Hay Productos para listar</p>
+{{/if}}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/client.js"></script>

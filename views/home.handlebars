@@ -1,3 +1,19 @@
 <h2>{{titulo}}</h2>
 <p>Conectado mediante {{protocolo}}</p>
-{{>list}}
+
+{{#if hayProductos}}
+<ul id="lista">
+    {{#each productos}}
+    <li><strong>{{this.title}}</strong>
+        : ${{this.price}} || {{this.category}}
+        {{#if this.status}}
+        ✅ Stock: {{this.stock}}
+        {{else}}
+        ❌
+        {{/if}}</li>
+
+    {{/each}}
+</ul>
+{{else}}
+<p>No Hay Productos para listar</p>
+{{/if}}

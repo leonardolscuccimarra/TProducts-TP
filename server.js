@@ -13,10 +13,10 @@ const PORT = 8080;
 
 const server = http.createServer(app);
 const io = new Server(server);
-const liveIo = io.of('/realtimeproducts');
+/* const liveIo = io.of('/realtimeproducts'); */
 
 
-app.engine('handlebars', handlebars.engine);
+app.engine('handlebars', handlebars.engine());
 app.set('views', './views');
 app.set('view engine', 'handlebars')
 app.use(express.json());
@@ -24,32 +24,29 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(routerMain);
 app.use(routerProducts);
-app.use('/api/realtimeproducts', routerView);
-app.use(express.static('/public'));
+app.use('/realtimeproducts', routerView);
+app.use(express.static('public'));
 
-app.use((req, res, next) => {
-    req.io = liveIo;
-    next();
-});
+app.set('io', io);
 
 
 
-liveIo.on('connection', socket => {
+io.on('connection', socket => {
     console.log('Cliente conectado');
 
     socket.on('disconnect', () => {
         console.log('Cliente desconectado');
     });
 
-    socket.on('update', data => {
+    socket.on('refresh', data => {
         console.log(`Cambio en la base de datos:\n`, data)
-        io.emit('mensaje', data)
+        io.emit('update', data.value)
     })
 });
 
 server.listen(PORT, () => {
     console.clear();
-    console.log(`SERVER ON: http://localhost:${PORT} \n\nhttp://localhost:${PORT}/api/products/ \nhttp://localhost:${PORT}/api/realtimeproducts/`);
+    console.log(`SERVER ON: http://localhost:${PORT} \n\nhttp://localhost:${PORT}/api/products/ \nhttp://localhost:${PORT}/realtimeproducts/`);
 });
 
 
